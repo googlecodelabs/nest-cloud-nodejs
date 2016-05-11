@@ -1,0 +1,55 @@
+<!--
+ Copyright 2016 Google Inc.
+ 
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+ 
+      http://www.apache.org/licenses/LICENSE-2.0
+ 
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+-->
+
+<!-- This is a custom polymer element for displaying lists of Nest devices -->
+
+<link rel="../../bower_components/polymer/polymer.html">
+<link rel="import" href="nest-device-list.html">
+
+<dom-module id="nest-device-page">
+
+  <template>
+
+    <template is="dom-if" if="{{hasDevices}}">
+      <!-- render a device list for each of the device types -->
+      <nest-device-list title="Thermostats" devices="{{deviceObject.thermostats}}"></nest-device-list>
+      <nest-device-list title="Smoke + CO Alarms" devices="{{deviceObject.smoke_co_alarms}}"></nest-device-list>
+      <nest-device-list title="Cameras" devices="{{deviceObject.cameras}}"></nest-device-list>
+
+      <style>
+        :host{
+          display: flex;
+          flex-direction: row;
+          flex-wrap: wrap;
+          justify-content: space-around;
+        }
+      </style>
+
+    </template>
+
+  </template>
+
+  <script>
+    Polymer({
+      is: 'nest-device-page',
+      properties:{
+        deviceObject: Object,
+        hasDevices: Boolean
+      }
+    });
+  </script>
+
+</dom-module>

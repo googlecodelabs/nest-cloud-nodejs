@@ -1,0 +1,120 @@
+<!--
+ Copyright 2016 Google Inc.
+ 
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+ 
+      http://www.apache.org/licenses/LICENSE-2.0
+ 
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+-->
+
+<!-- This is a custom polymer element for displaying Nest devices in a list by device type -->
+
+<link rel="../../bower_components/polymer/polymer.html">
+<link rel="import" href="nest-thermostat.html">
+<link rel="import" href="nest-protect.html">
+<link rel="import" href="nest-cam.html">
+
+<dom-module id="nest-device-list">
+
+  <template>
+
+    <!-- if this is a list containing thermostats: -->
+    <template is="dom-if" if="[[_stringCompare(deviceType, 'thermostats')]]">
+      <paper-material class="blue">
+        <paper-header-panel standard>
+          <paper-toolbar class="blue">
+            <span class="title">{{title}}</span>
+          </paper-toolbar>
+        </paper-header-panel>
+
+        <!-- render a thermostat element for each entry in deviceArray -->
+        <template is="dom-repeat" items="{{deviceArray}}">
+          <nest-thermostat device="{{item}}"></nest-thermostat>
+        </template>
+      </paper-material>
+    </template>
+
+    <!-- if this is a list containing smoke and co alarms: -->
+    <template is="dom-if" if="[[_stringCompare(deviceType, 'smoke_co_alarms')]]">
+      <paper-material class="green">
+        <paper-header-panel standard>
+          <paper-toolbar class="green">
+            <span class="title">{{title}}</span>
+          </paper-toolbar>
+        </paper-header-panel>
+
+        <!-- render a smoke alarm element for each entry in deviceArray -->
+        <template is="dom-repeat" items="{{deviceArray}}">
+          <nest-protect device="{{item}}"></nest-protect>
+        </template>
+      </paper-material>
+    </template>
+
+    <!-- if this is a list containing cameras: -->
+    <template is="dom-if" if="[[_stringCompare(deviceType, 'cameras')]]">
+      <paper-material class="red">
+        <paper-header-panel standard>
+          <paper-toolbar class="red">
+            <span class="title">{{title}}</span>
+          </paper-toolbar>
+        </paper-header-panel>
+
+        <!-- render a camera element for each entry in deviceArray -->
+        <template is="dom-repeat" items="{{deviceArray}}">
+          <nest-cam device="{{item}}"></nest-cam>
+        </template>
+      </paper-material>
+    </template>
+
+    <style>
+      :host{
+        display: flex;
+        flex-direction: column;
+        margin-top: 1rem;
+      }
+
+      paper-toolbar.green{ --paper-toolbar-background: var(--paper-light-green-700); }
+      paper-toolbar.blue{ --paper-toolbar-background: var(--paper-light-blue-700); }
+      paper-toolbar.red{ --paper-toolbar-background: var(--paper-deep-orange-700); }
+      paper-material.green{ background-color: var(--paper-light-green-100); }
+      paper-material.blue{ background-color: var(--paper-light-blue-100); }
+      paper-material.red{ background-color: var(--paper-deep-orange-100); }
+
+    </style>
+
+  </template>
+
+  <script>
+    var values = require('lodash').values;
+    Polymer({
+      is: 'nest-device-list',
+      properties: {
+        devices: {
+          type: Object,
+          observer: '_handleDeviceChange'
+        },
+        deviceArray: Array,
+        deviceType: String
+      },
+      _handleDeviceChange: function(newValue, oldValue){
+        // convert device property to an array
+        // (Arrays are needed for dom-repeat elements)
+        this.deviceArray = values(newValue);
+        // figure out what type of device this list will display
+        this.deviceType = this.deviceArray[0]._deviceType;
+      },
+      // used to determine what type of list to render (thermostats, cameras, or smoke alarms)
+      _stringCompare: function(string1, string2){
+        return string1 === string2;
+      }
+    });
+
+  </script>
+</dom-module>

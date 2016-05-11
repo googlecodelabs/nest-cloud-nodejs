@@ -1,0 +1,90 @@
+<!--
+ Copyright 2016 Google Inc.
+ 
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+ 
+      http://www.apache.org/licenses/LICENSE-2.0
+ 
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+-->
+
+<!-- Import polymer styles -->
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/paper-styles/typography.html">
+<link rel="import" href="../bower_components/paper-styles/color.html">
+
+<!-- Begin custom styles -->
+<style is="custom-style">
+
+
+  :root {
+    --primary-text-color: var(--paper-grey-900);
+    --primary-background-color: #ffffff;
+    --secondary-text-color: #737373;
+    --disabled-text-color: #9b9b9b;
+    --divider-color: #dbdbdb;
+    --primary-color: var(--paper-indigo-500);
+    --light-primary-color: var(--paper-indigo-100);
+    --dark-primary-color: var(--paper-indigo-700);
+    --accent-color: var(--paper-pink-a200);
+    --light-accent-color: var(--paper-pink-a100);
+    --dark-accent-color: var(--paper-pink-a400);
+  }
+
+  body{
+    font-family: 'Roboto', 'Noto', sans-serif;
+  }
+
+  .display-none{
+    display: none;
+  }
+
+  .red-button{
+    background-color: var(--paper-red-500);
+    color: white;
+  }
+
+  .green-button{
+    background-color: var(--paper-green-500);
+    color: white;
+  }
+
+  .teal-button{
+    background-color: var(--paper-teal-500);
+    color: white;
+  }
+
+  .pink-button{
+    background-color: var(--paper-pink-a200);
+    color: white;
+  }
+
+  #api-button[disabled]{
+    background-color: #eaeaea;
+  }
+
+  #connected-status{
+   color: white;
+   font-size: smaller;
+ }
+
+ #connected-spinner{
+   margin-right: 1rem;
+ }
+
+ #api-button{
+   margin-top: 1rem;
+ }
+
+ #devices{
+   flex-grow: 1;
+   justify-content: space-around;
+ }
+
+</style>

@@ -1,0 +1,23 @@
+{
+  "name": "nest-web-codelab",
+  "description": "",
+  "main": "dist/index.html",
+  "authors": [
+    "Nest Labs, Inc."
+  ],
+  "license": "Apache 2",
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "polymer": "Polymer/polymer#^1.4.0",
+    "iron-elements": "PolymerElements/iron-elements#^1.0.10",
+    "paper-elements": "PolymerElements/paper-elements#^1.0.7",
+    "neon-elements": "PolymerElements/neon-elements#^1.0.0"
+  }
+}

@@ -1,4 +1,4 @@
-# Google Sheets API Codelab
+# nest-cloud-nodejs
 
 This folder contains the source code for a Google I/O 2016 codelab.
 

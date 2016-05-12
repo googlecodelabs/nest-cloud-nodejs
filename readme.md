@@ -22,3 +22,20 @@ WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
 License for the specific language governing permissions and limitations under
 the License.
 ```
+#Nest API Codelab
+
+##Codelab
+See https://codelabs.developers.google.com/codelabs/nest-cloud-nodejs/ for codelab instructions.
+
+## Setup
+
+1. install dependencies `npm install && bower install`
+2. globally install the builder `npm install -g gulp`
+3. run the build process with `gulp`
+4. `dist` directory should have been created
+
+
+## Run
+Make sure you have electron installed (`npm install -g electron-prebuilt`)
+
+To run: `electron dist/main.js`

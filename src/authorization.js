@@ -1,17 +1,3 @@
-// Copyright 2016 Google Inc.
-// 
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-// 
-//      http://www.apache.org/licenses/LICENSE-2.0
-// 
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
 (function(document) {
   var electron = window.require('electron');
   const NestApplicationInterface = window.NestApplicationInterface;
@@ -24,16 +10,32 @@
   var apiButton = document.getElementById('api-button');
   var config = require('../config.json');
   var fs = require('fs');
+  var random = require('lodash').random;
 
   let pincodeButton = document.getElementById('pincode-button');
   let cancelPincodeButton = document.getElementById('cancel-pincode-button');
 
+  function generatePseudoRandomRange ( intLength ) {
+      var chars = [];
+
+      for ( var i = 0; i < intLength; i++ ) {
+
+          chars.push(String.fromCharCode(random(97, 122)));
+          chars.push(random(0, 9).toString());
+      }
+
+      return chars.join("");
+  }
+
   // if the user doesn't yet have a token, do the OAuth flow
   if(config.token === "your_token"){
-    // do OAuth flow for the first time to get the token
+    // do Pincode flow for the first time to get the token
     apiButton.addEventListener('click', function(){
       apiButton.disabled = true;
-      let OauthUrl = "https://home.nest.com/login/oauth2?client_id=" + config.clientId + "&state=FOO";
+      let OauthUrl = "https://home.nest.com/login/oauth2?client_id="
+        + config.productID + "&state=" + generatePseudoRandomRange(12);
+
+        //console.log("HERE IS THE RANDOM RANGE URL!", OauthUrl);
 
       authWindow = new electron.remote.BrowserWindow({
           width: 800
@@ -52,17 +54,16 @@
       connectedStatus.innerHTML = 'Connecting';
       connectedSpinner.active = true;
 
-      NestApplicationInterface.doOauth( pincodeInput.value, config.productID, config.productSecret ).then(
+      NestApplicationInterface.doOauth( config.productID, config.productSecret, pincodeInput.value ).then(
         (result) => {
           console.log("OAuth finished, result: ", result);
 
-          //token should be something similar to 'result.token', although this may be wrong
+          // get the token
           config.token = result.token;
-          NestApplicationInterface.setToken(result.token);
 
           // update the config file
-          fs.writeFile('../config.json', JSON.stringify(config, null, 2), function(error){
-            if(error) {return console.warn(error);}
+          fs.writeFile('./config.json', JSON.stringify(config, null, 2), function(error){
+            if(error) {return console.warn(error)}
           });
 
           NestApplicationInterface.streamServiceChanges();

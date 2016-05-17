@@ -28,7 +28,7 @@
   }
 
   // if the user doesn't yet have a token, do the OAuth flow
-  if(config.token === "your_token"){
+  if(config.token === "your_token" || config.token === ""){
     // do Pincode flow for the first time to get the token
     apiButton.addEventListener('click', function(){
       apiButton.disabled = true;

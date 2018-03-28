@@ -513,53 +513,6 @@ class NestNetworkManager extends EventEmitter {
     }
 
     /**
-     * Initiates an HTTP GET request against the WWN API for a users structures.
-     * MUST have the accessToken property set as a string to initiate the request.
-     * @public
-     * @memberof NestNetworkManager
-     * @method getStructures
-     * @returns {RSVP.Promise} - a promise to be resolved/rejected on success/failure of the request with the response from the WWN API
-     */
-    getStructures ( ) {
-
-        return new RSVP.Promise(
-            ( resolve, reject ) => {
-
-                var fullUrl = NestNetworkManagerUtils.generateStructureGetUrl();
-
-                if ( this.accessToken === null ) {
-
-                    reject( null );
-
-                    throw new NetworkManagerErrors.NoTokenSetWhileMakingRequest;
-
-                    return null;
-                }
-
-                console.info("Getting structures with url:", fullUrl);
-
-                const req = request(
-                    fullUrl
-                    , function ( error, response, body ) {
-
-                        if ( error ) {
-
-                            reject({ error: error });
-
-                            return body;
-                        } else {
-
-                            resolve({ body: body });
-
-                            return body;
-                        }
-                    }
-                );
-            }
-        );
-    }
-
-    /**
      * Sets the serviceStream property on the Network Manager instance with
      * the given options. Will follow and cache redirects.
      * @private

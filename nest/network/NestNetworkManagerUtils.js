@@ -3,48 +3,16 @@
 const isString = require('lodash').isString;
 
 /**
- * Generates a URL used for the HTTP GET method for fetching a users
- * structures with a valid auth token.
- * @function
- * @name generateStructureGetUrl
- * @param {String} baseUrl - the base url of the target API
- * @param {String} accessToken - the users token for use with the WWN API
- * @returns {String} - the fully formed structure GET url
- */
-function generateStructureGetUrl ( baseUrl, accessToken ) {
-
-    return [
-        baseUrl
-        , [
-            "structures"
-            , "?"
-            , "auth"
-            , "="
-            , accessToken
-        ].join("")
-    ].join("/");
-}
-
-/**
  * Generates a URL used for the HTTP REST-STREAMING method for
  * streaming changes on the account root.
  * @function
  * @name generateSubscribeUrl
  * @param {String} baseUrl - the base url of the target API
- * @param {String} accessToken - the users token for use with the WWN API
  * @returns {String} - the fully formed root streaming url
  */
-function generateSubscribeUrl ( baseUrl, accessToken ) {
+function generateSubscribeUrl ( baseUrl ) {
 
-    return [
-        baseUrl
-        , [
-            "?"
-            , "auth"
-            , "="
-            , accessToken
-        ].join("")
-    ].join("/");
+    return baseUrl;
 }
 
 /**
@@ -52,13 +20,12 @@ function generateSubscribeUrl ( baseUrl, accessToken ) {
  * @function
  * @name generateDeviceUpdatePutUrl
  * @param {String} baseUrl - the base url of the target API
- * @param {String} accessToken - the users token for use with the WWN API
  * @param {String} deviceId - the WWN device id
  * @param {String} deviceType - the WWN device type ( thermostat, camera )
  * @param {String} keyToUpdate - the target key to update ( e.g. target_temperature_c )
  * @returns {String} - the fully formed PUT url
  */
-function generateDeviceUpdatePutUrl ( baseUrl, accessToken, deviceId, deviceType, keyToUpdate ) {
+function generateDeviceUpdatePutUrl ( baseUrl, deviceId, deviceType, keyToUpdate ) {
 
     return [
         baseUrl
@@ -66,7 +33,7 @@ function generateDeviceUpdatePutUrl ( baseUrl, accessToken, deviceId, deviceType
         , deviceType
         , deviceId
         , keyToUpdate
-    ].join("/")+"?auth="+accessToken;
+    ].join("/");
 }
 
 /**
@@ -81,11 +48,12 @@ function generateDeviceUpdatePutUrl ( baseUrl, accessToken, deviceId, deviceType
 function generateServiceStreamRequestOptions ( baseUrl, accessToken ) {
 
     return {
-        url: generateSubscribeUrl( baseUrl, accessToken )
+        url: generateSubscribeUrl( baseUrl )
         , followRedirect: true
         , removeRefererHeader: false
         , headers: {
             'Accept': 'text/event-stream'
+            , "Authorization": [ "Bearer", accessToken ].join(" ")
         }
     };
 }
@@ -109,7 +77,6 @@ function generateDeviceUpdateRequestOptions ( baseUrl, accessToken, deviceData, 
     return {
         url: generateDeviceUpdatePutUrl(
             baseUrl
-            , accessToken
             , deviceData.device_id
             , deviceData._deviceType
             , keyToUpdate
@@ -192,8 +159,7 @@ function extractAndParseStreamUpdateEventBody ( splitBody ) {
 }
 
 module.exports = {
-    generateStructureGetUrl
-    , generateServiceStreamRequestOptions
+    generateServiceStreamRequestOptions
     , generateDeviceUpdateRequestOptions
     , parseStringIntoJsObject
     , extractStreamUpdateEventType
